@@ -1,0 +1,496 @@
+% \iffalse meta-comment
+%
+% File: pgfmath-xfp.dtx Copyright (C) 2021 Jonathan P. Spratte
+%
+% This work  may be  distributed and/or  modified under  the conditions  of the
+% LaTeX Project Public License (LPPL),  either version 1.3c  of this license or
+% (at your option) any later version.  The latest version of this license is in
+% the file:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% ------------------------------------------------------------------------------
+%
+%<*driver>^^A>>=
+\def\nameofplainTeX{plain}
+\ifx\fmtname\nameofplainTeX\else
+  \expandafter\begingroup
+\fi
+\input l3docstrip.tex
+\askforoverwritefalse
+\preamble
+
+--------------------------------------------------------------
+pgfmath-xfp -- define pgfmath functions using xfp
+E-mail: jspratte@yahoo.de
+Released under the LaTeX Project Public License v1.3c or later
+See http://www.latex-project.org/lppl.txt
+--------------------------------------------------------------
+
+Copyright (C) 2020-2021 Jonathan P. Spratte
+
+This  work may be  distributed and/or  modified under  the conditions  of the
+LaTeX Project Public License (LPPL),  either version 1.3c  of this license or
+(at your option) any later version.  The latest version of this license is in
+the file:
+
+  http://www.latex-project.org/lppl.txt
+
+This work is "maintained" (as per LPPL maintenance status) by
+  Jonathan P. Spratte.
+
+This work consists of the file  pgfmath-xfp.dtx
+and the derived files           pgfmath-xfp.pdf
+                                pgfmath-xfp.sty
+
+\endpreamble
+% stop docstrip adding \endinput
+\postamble
+\endpostamble
+\generate{\file{pgfmath-xfp.sty}{\from{pgfmath-xfp.dtx}{pkg}}}
+\ifx\fmtname\nameofplainTeX
+  \expandafter\endbatchfile
+\else
+  \expandafter\endgroup
+\fi
+%
+\IfFileExists{pgfmath-xfp.sty}{\RequirePackage{pgfmath-xfp}}{}
+\ProvidesFile{pgfmath-xfp.dtx}
+  [\csname pgfmxfpDate\endcsname\space define pgfmath functions using xfp]
+\PassOptionsToPackage{full}{textcomp}
+\documentclass{l3doc}
+\RequirePackage{pgfplots}
+\RequirePackage[oldstylenums,nott]{kpfonts}
+\input{glyphtounicode}
+\pdfgentounicode=1
+\RequirePackage{listings}
+\RequirePackage{xcolor}
+\RequirePackage{microtype}
+\RequirePackage{accsupp}
+\lstset
+  {
+    ,flexiblecolumns=false
+    ,basewidth=.53em
+    ,gobble=2
+    ,basicstyle=\fontfamily{jkp}^^A\itshape
+    ,morekeywords=^^A
+      {^^A
+      }
+    ,morecomment=[l]\%
+    ,commentstyle=\color[gray]{0.4}
+    ,literate={\{}{{\CodeSymbol\{}}{1}
+              {\}}{{\CodeSymbol\}}}{1}
+    ^^A,literate=*{<key>}{\key}{4}{<set>}{\set}{4}
+  }
+\newcommand*\CodeSymbol[1]{\textbf{#1}}
+\RequirePackage{randtext}
+\let\metaORIG\meta
+\protected\def\meta #1{\texttt{\metaORIG{#1}}}
+\renewcommand*\thefootnote{\fnsymbol{footnote}}
+\makeatletter
+\definecolor{xfpred}{HTML}{9F393D}
+\colorlet{pgfgray}{black!75}
+\newcommand*\pgfmxfplogo
+  {^^A
+    \begingroup
+      \rmfamily
+      \bfseries
+      {\color{pgfgray}\scshape pgfmath}^^A
+      {\color{black}\textendash}^^A
+      {\color{xfpred}xfp}^^A
+    \endgroup
+  }
+\newcommand*\pgfmxfp
+  {^^A
+    \texorpdfstring
+      {^^A
+        \mbox
+          {^^A
+            \BeginAccSupp{ActualText=pgfmath-xfp}^^A
+            \href{https://github.com/Skillmon/ltx_pgfmath-xfp}{\pgfmxfplogo}^^A
+            \EndAccSupp{}^^A
+          }^^A
+      }
+      {pgfmath-xfp}^^A
+  }
+\hypersetup{linkcolor=red!80!black,urlcolor=purple!80!black}
+\DoNotIndex{}
+\DoNotIndex{}
+\DoNotIndex{}
+\DoNotIndex{}
+\DoNotIndex{}
+\DoNotIndex{}
+\DoNotIndex{}
+\DoNotIndex{}
+\DoNotIndex{}
+^^A\@gobble\fi ^^A ignoring \ifx and \ifcsname, but only one \fi
+\@ifdefinable\gobbledocstriptag{\def\gobbledocstriptag#1>{}}
+\makeatother
+\begin{document}
+  \title
+    {^^A
+      \texorpdfstring
+        {^^A
+          \huge\pgfmxfp
+          \\[\medskipamount]
+          \Large define \pkg{pgfmath} functions using \pkg{xfp}^^A
+        }{pgfmath-xfp - define pgfmath functions using xfp}^^A
+    }
+  \date{\pgfmxfpDate\space v\pgfmxfpVersion}
+  \author{Jonathan P. Spratte\thanks{\protect\randomize{jspratte@yahoo.de}}}
+  \DocInput{pgfmath-xfp.dtx}
+\end{document}
+%</driver>^^A=<<
+% \fi
+%
+% \maketitle
+% \renewcommand*\thefootnote{\arabic{footnote}}
+%
+% \begin{abstract}
+% \noindent\parfillskip=0pt
+% \pgfmxfp\ provides a small wrapper to define \pkg{pgfmath} functions which
+% use the floating point unit of \pkg{expl3} (of which the document-level
+% interface is called \pkg{xfp}).
+% \end{abstract}
+%
+% \tableofcontents
+%
+% \begin{documentation}^^A>>=
+%
+% \section{Documentation}
+%
+% This package serves as a stopgap to allow the usage of \pkg{xfp} in
+% \pkg{pgfmath} functions. It is only meant as a temporary fix to allow single
+% functions using the \pkg{expl3} fpu until a more sophisticated solution to
+% allow broader support for it in \textsc{pgf} is available.
+%
+% The defined functions should work correctly independent of the surrounding
+% \pkg{pgfmath} context. This is achieved by first parsing the arguments via
+% \cs{pgfmathsetmacro} with \textsc{pgf} settings applied locally to ensure
+% that the resulting format is understandable by \pkg{xfp}'s fpu.
+%
+% It was created as a result of two questions on
+% \url{https://tex.stackexchange.com}:
+% \href
+%   {https://tex.stackexchange.com/q/597549/117050}
+%   {expl3 cannot see declared functions}
+% and
+% \href
+%   {https://tex.stackexchange.com/q/584887/117050}
+%   {pgf: “Dimension too large” in a function which fits into a graph,
+%     /pgf/fpu=true does not help}.
+%
+% \subsection{Document-Level Interface}
+%
+% \begin{function}{\pgfmxfpdeclarefunction}
+%   \begin{syntax}
+%     \cs{pgfmxfpdeclarefunction}\marg{name}\marg{arg-count}\oarg{process-args}\marg{fp-expression}
+%   \end{syntax}
+%   Define a \pkg{pgfmath} function named \meta{name} that takes
+%   \meta{arg-count} arguments. The behaviour is different depending on whether
+%   the optional argument was used or not.
+%   \begin{description}
+%     \item[If it isn't] the \meta{fp-expression} can refer to the
+%       \meta{arg-count} arguments using |#1|, \emph{etc.}, and will get the
+%       arguments just like they are given to the function (translated to a
+%       format that \pkg{xfp} will understand by parsing them through
+%       \pkg{pgfmath} once).
+%     \item[If it is] use \meta{process-args} to specify any number of
+%       processed arguments in a comma separated list. Inside this list you can
+%       specify up to nine processed arguments using \pkg{pgfmath} functions in
+%       which you can refer to the arguments passed to your new function using
+%       |#1|, \emph{etc}.
+%       You can refer to these processed arguments inside \meta{fp-expression}
+%       using |#1|, \emph{etc}. A result of this rule is that you have to
+%       explicitly use |#1| in \meta{process-args} to forward it unaltered to
+%       the underlying \pkg{xfp} expression.
+%   \end{description}
+% \end{function}
+%
+% \subsection{Examples}
+%
+% The following are examples taken from the two questions responsible for this
+% package.
+%
+% \begin{lstlisting}
+% \pgfmxfpdeclarefunction{lognormal}{3}
+%   {exp(-((ln(#1) - #2)^2) / (2 * (#3)^2)) / (#1 * #3 * sqrt(2 * pi))}
+%
+% \begin{tikzpicture}
+% \begin{axis}[ domain=0.01:10, samples=100 ]
+%   \addplot {lognormal(x,ln(5),0.2)};
+% \end{axis}
+% \end{tikzpicture}
+% \end{lstlisting}
+% \begin{minipage}{\linewidth}
+% \pgfmxfpdeclarefunction{lognormal}{3}
+%   {exp(-((ln(#1) - #2)^2) / (2 * (#3)^2)) / (#1 * #3 * sqrt(2 * pi))}
+% \begin{tikzpicture}
+% \begin{axis}[ domain=0.01:10, samples=100 ]
+%   \addplot {lognormal(x,ln(5),0.2)};
+% \end{axis}
+% \end{tikzpicture}
+% \end{minipage}
+%
+% Showing that a single \pkg{pgfmath} function argument can result in multiple
+% arguments for the \pkg{xfp} expression. This example is suboptimal slow code,
+% but could be educational.
+%
+% \begin{lstlisting}
+% \pgfmxfpdeclarefunction{fplog}{1}{ln(#1)}
+% \pgfmxfpdeclarefunction{nlogn}{1}[#1,fplog(#1)]{#1 * #2}
+%
+% \begin{tikzpicture}
+%   \begin{axis}[ domain=0.01:10, samples=50 ]
+%     \addplot {nlogn(x)};
+%   \end{axis}
+% \end{tikzpicture}
+% \end{lstlisting}
+% \begin{minipage}{\linewidth}
+% \pgfmxfpdeclarefunction{fplog}{1}{ln(#1)}
+% \pgfmxfpdeclarefunction{nlogn}{1}[#1,fplog(#1)]{#1 * #2}
+% \begin{tikzpicture}
+%   \begin{axis}[ domain=0.01:10, samples=50 ]
+%     \addplot {nlogn(x)};
+%   \end{axis}
+% \end{tikzpicture}
+% \end{minipage}
+%
+%
+% \subsection{\pkg{expl3}-Level Interface}
+%
+% \begin{function}{\pgfmxfp_declare:nnn}
+%   \begin{syntax}
+%     \cs{pgfmxfp_declare:nnn} \marg{name} \marg{arg-count} \marg{fp-expression}
+%   \end{syntax}
+%   Defines a \pkg{pgfmath} function named \meta{name}, that takes
+%   \marg{arg-count} arguments. The function will evaluate the
+%   \meta{fp-expression} using the \pkg{l3fp} fpu and store the result for
+%   \pkg{pgfmath}. The arguments can be referred using |#1|, \emph{etc}.
+% \end{function}
+%
+% \begin{function}{\pgfmxfp_declare_processed_args:nnnn}
+%   \begin{syntax}
+%     \cs{pgfmxfp_declare_processed_args:nnnn} \marg{name} \marg{arg-count} \marg{processed-args} \marg{fp-expression}
+%   \end{syntax}
+%   Defines a \pkg{pgfmath} function named \meta{name}, that takes
+%   \marg{arg-count} arguments. The arguments will be evaluated through
+%   \pkg{pgfmath} according to the comma separated list of
+%   \meta{processed-args} (in which you can refer to the arguments using |#1|,
+%   \emph{etc.}) and the results of which will be the arguments for the
+%   \meta{fp-expression} (in which you can refer to the \meta{processed-args}
+%   using |#1|, \emph{etc.}).
+% \end{function}
+%
+% \end{documentation}^^A=<<
+%
+% \begin{implementation}^^A>>=
+%
+% \clearpage
+%
+% \section{Implementation}^^A>>=
+%
+% \gobbledocstriptag
+%<*pkg>
+% \gobbledocstriptag
+%<@@=pgfmxfp>
+%
+% \subsection{General Package code}
+%
+% Some code for versioning support might not be available in older \LaTeXe{}
+% releases.
+%    \begin{macrocode}
+\providecommand\DeclareRelease[3]{}
+\providecommand\DeclareCurrentRelease[2]{}
+%    \end{macrocode}
+% Use these rollback functions to declare the current release.
+%    \begin{macrocode}
+\DeclareCurrentRelease{}{2021-05-18}
+%    \end{macrocode}
+%
+% Make sure \pkg{expl3} is available and load \pkg{pgfmath}
+%    \begin{macrocode}
+\@ifundefined{ExplFileDate}
+  {\RequirePackage{expl3}}
+  {}
+\RequirePackage{pgfmath}
+%    \end{macrocode}
+%
+% \begin{macro}{\pgfmxfpDate, \pgfmxfpVersion}
+%   Store version and date in a macro.
+%    \begin{macrocode}
+\newcommand*\pgfmxfpDate{2021-05-18}
+\newcommand*\pgfmxfpVersion{1.0}
+%    \end{macrocode}
+% \end{macro}
+%
+% Provide the package.
+%    \begin{macrocode}
+\ProvidesExplPackage
+  {pgfmath-xfp}     {\pgfmxfpDate}
+  {\pgfmxfpVersion} {define pgfmath functions using xfp}
+%    \end{macrocode}
+%
+% \subsection{Document-Level Interface}
+%
+% \begin{macro}{\pgfmxfpdeclarefunction}
+%   The document-level interface decides which of the two allocator functions
+%   are used.
+%    \begin{macrocode}
+\NewDocumentCommand \pgfmxfpdeclarefunction { m m o m }
+  {
+    \IfValueTF {#3}
+      { \pgfmxfp_declare_processed_args:nnnn {#1} {#2} {#3} }
+      { \pgfmxfp_declare:nnn {#1} {#2} }
+      {#4}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{\pkg{expl3}-Level Interface}
+%
+% \begin{macro}{\pgfmxfp_declare:nnn}
+%   Start building the function body. First step is to initialize it with the
+%   common code. Then we add to the function body the input parsing step. For
+%   this we use a loop that will place
+%   \cs{pgfmathsetmacro} \meta{tmp-cs_i} |{#|\meta{i}|}|
+%   in the function body.
+%   Afterwards we do the real definitions. This strange construct is used to
+%   normalize the input. Depending on the context in which these functions are
+%   used, the arguments might be in the internal format of \textsc{pgf}'s
+%   \pkg{fpu}-library or something else that \pkg{l3fp} will not understand.
+%   The \cs{pgfmathsetmacro} calls will be done in a local context in which
+%   \textsc{pgf}'s \pkg{fpu}-library will be activated and set up to output in
+%   a format \pkg{l3fp} understands.
+%    \begin{macrocode}
+\cs_new_protected:Npn \pgfmxfp_declare:nnn #1#2#3
+  {
+    \@@_initialize_body:
+    \int_step_inline:nn {#2}
+      {
+        \tl_put_right:Nx \l_@@_function_body_tl
+          {
+            \exp_not:n { \pgfmathsetmacro } \exp_not:c { @@_arg##1 }
+              { \exp_not:n {####} ##1 }
+          }
+      }
+    \@@_define_function:nnnn {#2} {#1} {#2} {#3}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\pgfmxfp_declare_processed_args:nnnn}
+%   This works mostly like \cs{pgfmxfp_declare:nnn}, but instead of
+%   using an \cs{int_step_inline:nn}-loop this uses \cs{clist_map_inline:nn} to
+%   map over the processed arguments. Those will be stored in the function body
+%   as 
+%   \cs{pgfmathsetmacro} \meta{tmp-cs_i} |{|\meta{expr_i}|}|.
+%    \begin{macrocode}
+\cs_new_protected:Npn \pgfmxfp_declare_processed_args:nnnn #1#2#3#4
+  {
+    \@@_initialize_body:
+    \int_zero:N \l_@@_args_int
+    \clist_map_inline:nn {#3}
+      {
+        \int_incr:N \l_@@_args_int
+        \tl_put_right:Nx \l_@@_function_body_tl
+          {
+            \exp_not:n { \pgfmathsetmacro }
+              \exp_not:c { @@_arg \int_use:N \l_@@_args_int }
+              { \exp_not:n {##1} }
+          }
+      }
+    \exp_args:NV \@@_define_function:nnnn \l_@@_args_int {#1} {#2} {#4}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Internals}
+%
+% \begin{variable}{\l_@@_function_body_tl}
+%   This token list will be used to build the function's top-level definition.
+%    \begin{macrocode}
+\tl_new:N \l_@@_function_body_tl
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{variable}{\l_@@_args_int}
+%   In the case of \cs{pgfmxfp_declare_processed_args:nnnn} we'll have
+%   to count how many arguments the auxiliary function will take. 
+%    \begin{macrocode}
+\int_new:N \l_@@_args_int
+%    \end{macrocode}
+% \end{variable}
+%
+% 
+% \begin{macro}{\@@_initialize_body:}
+%   Each function will have the same start setting up \textsc{pgf}'s \pkg{fpu}.
+%    \begin{macrocode}
+\cs_new_protected:Npn \@@_initialize_body:
+  {
+    \tl_set:Nn \l_@@_function_body_tl
+      {
+        \group_begin:
+        \pgfkeys{/pgf/fpu=true, /pgf/fpu/output~format=sci}%
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_define_function:nnnn, \@@_define_function_aux:n}
+%   First we define the internal function. Then add to the function body some
+%   code that'll use \cs{use:x} to expand the temporary macros that store the
+%   input arguments and forward the results to the internal function.
+%    \begin{macrocode}
+\cs_new_protected:Npn \@@_define_function:nnnn #1#2#3#4
+  {
+    \@@_define_internal_function:nnn {#1} {#2} {#4}
+    \tl_put_right:Nx \l_@@_function_body_tl
+      {
+        \use:x
+          { 
+            \exp_not:c { @@_function_ #2 _cmd }
+            \int_step_function:nN {#1} \@@_define_function_aux:n
+          }
+      }
+    \exp_args:Nnno
+    \pgfmathdeclarefunction {#2} {#3} \l_@@_function_body_tl
+  }
+%    \end{macrocode}
+%   The auxiliary is just used to build the temporary macro names and prevent
+%   them from further expansion.
+%    \begin{macrocode}
+\cs_new:Npn \@@_define_function_aux:n #1 { { \exp_not:c { @@_arg#1 } } }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}
+%   {\@@_define_internal_function:nnn, \@@_define_internal_function_aux:n}
+%   The internal function is pretty straight forward, the only difficult part
+%   is building the parameter list. For that we use some simple loop, a slow
+%   but simplistic solution.
+%    \begin{macrocode}
+\cs_new_protected:Npn \@@_define_internal_function:nnn #1#2#3
+  {
+    \exp_last_unbraced:Nx
+    \cs_set_protected:cpn
+      {
+        { @@_function_ #2 _cmd }
+        \int_step_function:nN {#1} \@@_define_internal_function_aux:n
+      }
+      { \group_end: \exp_args:Nf \pgfmathparse { \fp_eval:n {#3} } }
+  }
+\cs_new:Npn \@@_define_internal_function_aux:n #1 { \exp_not:n {## #1} }
+%    \end{macrocode}
+% \end{macro}
+\ExplSyntaxOff
+%^^A=<<
+%
+% \end{implementation}^^A=<<
+%
+% \clearpage
+% \PrintIndex
+%
+\endinput
+%
+^^A vim: ft=tex fdm=marker fmr=>>=,=<<

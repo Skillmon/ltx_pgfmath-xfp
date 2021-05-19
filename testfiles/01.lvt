@@ -1,0 +1,48 @@
+\input regression-test
+
+\RequirePackage{pgfmath-xfp}
+
+\START
+
+\TEST{definition}
+  {%
+    \pgfmxfpdeclarefunction{fplog}{1}{ln{#1}}
+    \pgfmxfpdeclarefunction{nlogn}{1}[#1,fplog(#1)]{#1*#2}
+  }
+
+\OMIT
+\pgfmxfpdeclarefunction{fplog}{1}{ln{#1}}
+\pgfmxfpdeclarefunction{nlogn}{1}[#1,fplog(#1)]{#1*#2}
+\pgfmxfpdeclarefunction{fpsin}{1}{sind(#1)}
+\newcommand*\dotest
+  {%
+    \pgfmathparse{fpsin(90)}%
+    \TYPE{fpsin(90): \pgfmathresult}%
+    \pgfmathparse{nlogn(1)}%
+    \TYPE{nlogn(1): \pgfmathresult}%
+  }
+\TIMO
+
+\TEST{with standard settings}
+  {
+    \dotest
+  }
+
+\TEST{with fpu activated}
+  {
+    \pgfkeys{/pgf/fpu}
+    \dotest
+  }
+
+\TEST{with fpu and output=sci}
+  {
+    \pgfkeys{/pgf/fpu,/pgf/fpu/output format=sci}
+    \dotest
+  }
+
+\TEST{with fpu and output=fixed}
+  {
+    \pgfkeys{/pgf/fpu,/pgf/fpu/output format=fixed}
+    \dotest
+  }
+\END

@@ -1,7 +1,7 @@
 -- Build script for pgfmath-xfp
 module     = "pgfmath-xfp"
 pkgversion = "1.0"
-pkgdate    = "2021-05-18"
+pkgdate    = "2021-05-19"
 
 -- update package date and version
 tagfiles = {"pgfmath-xfp.dtx", "README.md", "CTAN.md"}

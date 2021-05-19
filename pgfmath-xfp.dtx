@@ -169,6 +169,10 @@ and the derived files           pgfmath-xfp.pdf
 % \cs{pgfmathsetmacro} with \textsc{pgf} settings applied locally to ensure
 % that the resulting format is understandable by \pkg{xfp}'s fpu.
 %
+% Though it has both \pkg{pgfmath} and \pkg{xfp} in its name, it only loads
+% \pkg{pgfmath} as a dependency, the access to \pkg{xfp}'s fpu is done at the
+% \pkg{expl3} level.
+%
 % It was created as a result of two questions on
 % \url{https://tex.stackexchange.com}:
 % \href
@@ -305,7 +309,7 @@ and the derived files           pgfmath-xfp.pdf
 %    \end{macrocode}
 % Use these rollback functions to declare the current release.
 %    \begin{macrocode}
-\DeclareCurrentRelease{}{2021-05-18}
+\DeclareCurrentRelease{}{2021-05-19}
 %    \end{macrocode}
 %
 % Make sure \pkg{expl3} is available and load \pkg{pgfmath}
@@ -319,7 +323,7 @@ and the derived files           pgfmath-xfp.pdf
 % \begin{macro}{\pgfmxfpDate, \pgfmxfpVersion}
 %   Store version and date in a macro.
 %    \begin{macrocode}
-\newcommand*\pgfmxfpDate{2021-05-18}
+\newcommand*\pgfmxfpDate{2021-05-19}
 \newcommand*\pgfmxfpVersion{1.0}
 %    \end{macrocode}
 % \end{macro}

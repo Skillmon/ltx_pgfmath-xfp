@@ -312,12 +312,14 @@ and the derived files           pgfmath-xfp.pdf
 \DeclareCurrentRelease{}{2021-05-19}
 %    \end{macrocode}
 %
-% Make sure \pkg{expl3} is available and load \pkg{pgfmath}
+% Make sure \pkg{expl3} is available and load \pkg{pgfmath} and the \textsc{pgf}
+% fpu.
 %    \begin{macrocode}
 \@ifundefined{ExplFileDate}
   {\RequirePackage{expl3}}
   {}
 \RequirePackage{pgfmath}
+\usepgflibrary{fpu}
 %    \end{macrocode}
 %
 % \begin{macro}{\pgfmxfpDate, \pgfmxfpVersion}

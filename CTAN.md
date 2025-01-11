@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 # pgfmath-xfp -- define pgfmath functions using xfp
 
-Version 2021-05-19 v1.0
+Version 2025-01-11 v1.0
 
 Released under the LaTeX Project Public License v1.3c or later
 See http://www.latex-project.org/lppl.txt

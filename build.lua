@@ -1,6 +1,6 @@
 -- Build script for pgfmath-xfp
 module     = "pgfmath-xfp"
-pkgversion = "1.0"
+pkgversion = "1.0a"
 pkgdate    = "2025-01-11"
 
 -- update package date and version
